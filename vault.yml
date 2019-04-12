@@ -1,0 +1,14 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  vars_prompt:
+    -  name: token
+       prompt: Enter token
+       private: yes
+  vars:
+          secret: "{{ lookup('hashi_vault', 'secret=ansible/ansible token={{ token }} url=http://127.0.0.1:8200') }}"
+  tasks:
+  - debug:
+      msg: "user is {{ secret.username }} password is {{ secret.password }}"
